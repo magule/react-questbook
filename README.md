@@ -1,6 +1,6 @@
 # React Blog With Firebase
 
-blog-firebase-2f0a8.web.app
+www.blog-firebase-2f0a8.web.app
 
 ## Homepage / Anasayfa
 
