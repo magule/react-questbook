@@ -27,7 +27,7 @@ function Home({isAuth}) {
                 <div className="post">
                     <div className="postHeader">
                          <div className="title">
-                             <h1> {post.title} </h1>
+                             <h2> {post.title} </h2>
                         </div> 
                         <div className="deletePost">
                           {isAuth && post.author.id === auth.currentUser.uid && (
@@ -42,7 +42,7 @@ function Home({isAuth}) {
                          )}
                         </div>
                     </div>
-                    <div className="postTextContainer"> <h4>{post.postText}</h4> </div>
+                    <div className="postTextContainer"> <p>{post.postText}</p> </div>
                     <small>@{post.author.name}</small> 
                 </div>
 

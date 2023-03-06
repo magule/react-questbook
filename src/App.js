@@ -22,7 +22,7 @@ function App() {
     <Router>
       <nav>
         <Link to='/'>Home </Link>
-        {!isAuth ? (<Link to='/login'>Loginn </Link> ):( <>  
+        {!isAuth ? (<Link to='/login'>Login  </Link> ):( <>  
         <Link to='/createpost'>New Post </Link>
         <button onClick={signUserOut}>Log Out</button>
         </>
