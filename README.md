@@ -1,6 +1,6 @@
-# React Blog With Firebase https://blog-firebase-2f0a8.web.app/
+# React Blog With Firebase 
+# https://blog-firebase-2f0a8.web.app/
 
-Link of the webapp: blog-firebase-2f0a8.web.app
 
 ## Homepage / Anasayfa
 
