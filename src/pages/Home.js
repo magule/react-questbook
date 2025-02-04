@@ -1,27 +1,37 @@
 import React, { useState, useEffect } from "react";
-import {getDoc, getDocs, collection,deleteDoc, doc} from 'firebase/firestore';
+import {getDoc, getDocs, collection, deleteDoc, doc} from 'firebase/firestore';
 import {auth, db} from '../firebase-config';
 
 function Home({isAuth}) {
     const [postsLists, setPostList] = useState([]);
     const postsCollectionRef = collection(db, "posts");
 
-    useEffect(() => {
-        const getPosts = async () => {
+    const getPosts = async () => {
+        try {
             const data = await getDocs(postsCollectionRef); 
             setPostList(data.docs.map((doc) => ({
                 ...doc.data(),
                 id: doc.id,
                 createdAt: doc.data().createdAt?.toDate() || new Date()
             })));
-        };
+        } catch (error) {
+            console.error("Error fetching posts:", error);
+        }
+    };
 
+    useEffect(() => {
         getPosts();
     }, []);
 
     const deletePost = async (id) => {
-        const postDoc = doc(db, "posts", id);
-        await deleteDoc(postDoc);
+        try {
+            const postDoc = doc(db, "posts", id);
+            await deleteDoc(postDoc);
+            // Refresh the posts list after deletion
+            await getPosts();
+        } catch (error) {
+            console.error("Error deleting post:", error);
+        }
     };
 
     return (

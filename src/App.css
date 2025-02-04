@@ -60,26 +60,57 @@ nav a {
   transition: all 0.2s ease;
 }
 
-nav a:hover {
+/* Regular nav links */
+nav a:not([href="/createpost"]):hover {
   background: rgba(45, 212, 191, 0.1);
   color: var(--primary);
 }
 
-nav button {
-  background: var(--primary);
-  color: var(--bg-dark);
-  border: none;
+/* Special styling for New Post link */
+nav a[href="/createpost"] {
+  background: transparent;
+  color: var(--primary);
+  font-weight: 600;
   padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 2px solid var(--primary);
+  position: relative;
+  background: rgba(45, 212, 191, 0.05);
+}
+
+nav a[href="/createpost"]::before {
+  content: '+';
+  font-size: 18px;
+  font-weight: 600;
+}
+
+nav a[href="/createpost"]:hover {
+  background: rgba(45, 212, 191, 0.1);
+  border-color: var(--primary-dark);
+  color: var(--primary-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(45, 212, 191, 0.2);
+}
+
+/* Subtle logout button */
+nav button {
+  background: transparent;
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+  padding: 8px 16px;
   border-radius: 12px;
   font-size: 15px;
-  font-weight: 600;
+  font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 nav button:hover {
-  background: var(--primary-dark);
-  transform: translateY(-1px);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-primary);
+  transform: none;
 }
 
 /* Home Page */
