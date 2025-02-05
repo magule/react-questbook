@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {getDoc, getDocs, collection, deleteDoc, doc} from 'firebase/firestore';
+import {getDoc, getDocs, collection, deleteDoc, doc, query, orderBy} from 'firebase/firestore';
 import {auth, db} from '../firebase-config';
 
 function Home({isAuth}) {
@@ -8,12 +8,27 @@ function Home({isAuth}) {
 
     const getPosts = async () => {
         try {
-            const data = await getDocs(postsCollectionRef); 
-            setPostList(data.docs.map((doc) => ({
+            const data = await getDocs(postsCollectionRef);
+            const posts = data.docs.map((doc) => ({
                 ...doc.data(),
                 id: doc.id,
-                createdAt: doc.data().createdAt?.toDate() || new Date()
-            })));
+                docId: parseInt(doc.id) || 0
+            }));
+            
+            // Sort posts by createdAt timestamp if available, otherwise use document ID
+            const sortedPosts = posts.sort((a, b) => {
+                // If both posts have createdAt timestamps, use them
+                if (a.createdAt && b.createdAt) {
+                    return b.createdAt.seconds - a.createdAt.seconds;
+                }
+                // If only one post has createdAt, put the one with timestamp first
+                if (a.createdAt) return -1;
+                if (b.createdAt) return 1;
+                // If neither has createdAt, fall back to document ID
+                return b.docId - a.docId;
+            });
+            
+            setPostList(sortedPosts);
         } catch (error) {
             console.error("Error fetching posts:", error);
         }
@@ -21,6 +36,11 @@ function Home({isAuth}) {
 
     useEffect(() => {
         getPosts();
+        // Set up an interval to refresh posts periodically
+        const interval = setInterval(getPosts, 10000); // Refresh every 10 seconds
+        
+        // Cleanup interval on component unmount
+        return () => clearInterval(interval);
     }, []);
 
     const deletePost = async (id) => {
@@ -67,13 +87,6 @@ function Home({isAuth}) {
                             <div className="author">
                                 <span className="by">Posted by </span>
                                 <span className="name">@{post.author.name}</span>
-                            </div>
-                            <div className="date">
-                                {new Date(post.createdAt).toLocaleDateString('en-US', {
-                                    year: 'numeric',
-                                    month: 'short',
-                                    day: 'numeric'
-                                })}
                             </div>
                         </div>
                     </div>
